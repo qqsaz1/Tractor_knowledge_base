@@ -63,6 +63,47 @@
 
 Правило приоритета: **клавиатура всегда главная, все переходы идут через KEYBOARD.** Любое выключение автопилота или BORDER (с планшета, с клавиатуры, конец маршрута, смена маршрута/границы) возвращает систему в KEYBOARD с газом в минимум; при выключении BORDER незавершённый импульс орудия останавливается командой СТОП. Включить AUTO из BORDER (и наоборот) нельзя — сначала выключите текущий режим.
 
+# Настройка файлов config.txt и cmdline.txt
+
+## config.txt
+
+```bash
+sudo nano /boot/firmware/config.txt
+```
+
+В конце файла:
+
+```bash
+[all]
+dtoverlay=disable-bt
+core_freq=250
+# can sniffer config
+dtparam=spi=off
+dtoverlay=mcp2515-can0,oscillator=12000000,interrupt=25,spimaxfrequency=2000000
+dtoverlay=spi-bcm2835-overlay
+enable_uart=1
+dtoverlay=uart3
+dtoverlay=uart5
+#dtoverlay=i2c-gpio,bus=3,i2c_gpio_sda=17,i2c_gpio_scl=27
+dtoverlay=vc4-kms-v3d
+#DSI1 Use
+dtoverlay=vc4-kms-dsi-waveshare-panel-v2,10_1_inch_a
+#DSI0 Use
+#dtoverlay=vc4-kms-dsi-waveshare-panel-v2,10_1_inch_a,dsi0
+```
+
+## cmdline.txt
+
+```bash
+sudo nano /boot/firmware/cmdline.txt
+```
+
+Заменить на(**ОБЯЗАТЕЛЬНО В ОДНУ СТРОКУ**):
+
+```bash
+console=ttyAMA0 console=tty1 root=PARTUUID=90a9f106-02 rootfstype=ext4 fsck.repair=yes rootwait quiet splash plymouth.ignore-serial-consoles cfg80211.ieee80211_regdom=GB
+```
+
 # Настройка splash-screen с логотипом XFarm и автозапуск сборки
 
 ## Настройка splash-screen
